@@ -1,0 +1,78 @@
+# B.2.13 Two-Mass-Spring Plant 配置文件
+
+# 物理参数
+physical:
+  mass: 1.0
+  spring_constant: 1.0
+  natural_length: 1.0
+  mass_width: 0.3  # 物块宽度（正方形，单位：m）
+
+  
+# 仿真参数
+simulation:
+  dt: 0.01                    # 时间步长 (s)
+  total_time: 30.0            # 总仿真时间 (s)
+  integration_method: "rk4"   # 积分方法: euler, rk2, rk4
+  
+# 初始条件
+initial_conditions:
+  x1: 0.0                     # 质量体1初始位移
+  x2: 1.0                     # 质量体2初始位移
+  v1: 0.0                     # 质量体1初始速度
+  v2: 0.0                     # 质量体2初始速度
+  
+# 扰动参数
+disturbance:
+  enabled: True  # 是否启用扰动（全局开关）
+  
+  # 正弦扰动参数
+  sin_disturbance:
+    enabled: false  # 是否启用正弦扰动
+    w1_amplitude: 1.0
+    w2_amplitude: 2.0
+    frequency: 1.0
+  
+  # 阶跃扰动参数
+  step_disturbance:
+    enabled: true  # 是否启用阶跃扰动
+    magnitude: 1.0
+    direction: "positive"
+    target: "m2"
+    start_time: 1.0
+  
+  # 冲激扰动参数
+  impulse_disturbance:
+    enabled: false  # 是否启用冲激扰动
+    magnitude: 1.0
+    direction: "positive"
+    target: "m2"
+    start_time: 1.0
+    duration: 0.01
+
+
+
+  
+# 可视化参数
+visualization:
+  figure_size: [12, 8]
+  dpi: 100
+  animation_interval: 20     # ms
+  save_animation: false      # 暂时关闭保存以加快运行，改为 true 可保存
+  animation_filename: "two_mass_spring.mp4"
+  
+
+# 控制参数
+control:
+  enabled: True
+  controller_type: "mpc"
+  sampling_time: 0.01
+  w_max: 5.0  # 扰动估计限幅值
+  ramp_time: 0.5  # 热启动时间
+  collision_penalty_weight: 1000.0  # 软约束惩罚权重
+  eso_bandwidth: 50.0
+  
+  # 【新增】控制力幅值约束
+  u_max: 10.0   # 控制力上限
+  u_min: -10.0  # 控制力下限
+
+
